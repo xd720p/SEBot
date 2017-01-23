@@ -1,9 +1,9 @@
 {
-  "name": "untitled",
+  "name": "SEBot",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node app.js"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
