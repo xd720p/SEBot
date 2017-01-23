@@ -1,4 +1,4 @@
-let express = require('express');
+
 let config = require('./configs/config.json');
 let mongoose = require('mongoose');
 
