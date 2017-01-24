@@ -5,19 +5,22 @@ let bodyParser = require('body-parser');
 const fs = require('fs');
 const https = require('https');
 
-const options  = {
-    key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem')
-};
-
 let callbackServer = express();
 callbackServer.use(bodyParser.json());
 callbackServer.use(bodyParser.urlencoded({extended: false}));
 callbackServer.set('port', config.server.port);
 
+const options  = {
+    key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem'),
+    port: callbackServer.get('port')
+};
 
 
-https.createServer(callbackServer).listen(options, callbackServer.get('port'), function (err) {
+
+
+
+https.createServer(callbackServer).listen(options, function (err) {
     if (err) throw err;
     console.log('Server listening on port ' + callbackServer.get('port'));
 });
