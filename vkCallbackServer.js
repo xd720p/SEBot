@@ -32,7 +32,7 @@ callbackServer.post('/', function (req, res, next) {
 });
 
 callbackServer.get('/', function (req, res, next) {
-    console.log('Request: ', req);
+    console.log('Request: ', req.body);
     res.send("Hello world");
 });
 
