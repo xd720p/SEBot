@@ -23,6 +23,7 @@ https.createServer(callbackServer).listen(options, function (err) {
 });
 
 callbackServer.post('/', function (req, res, next) {
+    console.log('Request: ', req);
    if (isVkApi(req)) {
         res.send("208b5a5c");
    } else {
