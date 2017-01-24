@@ -1,5 +1,6 @@
 let express = require('express');
 let http = require('http');
+let https = require('https');
 let config = require('./configs/vkCallbackServerConfig.json');
 let bodyParser = require('body-parser');
 
@@ -9,7 +10,7 @@ callbackServer.use(bodyParser.urlencoded({extended: false}));
 callbackServer.set('port', config.server.port);
 
 
-http.createServer(callbackServer).listen(callbackServer.get('port'), function (err) {
+https.createServer(callbackServer).listen(callbackServer.get('port'), function (err) {
     if (err) throw err;
     console.log('Server listening on port ' + callbackServer.get('port'));
 });
@@ -29,9 +30,5 @@ function isVkApi(req) {
         return true;
     }
     return false;
-
-}
-
-function confirmVkApi() {
 
 }

