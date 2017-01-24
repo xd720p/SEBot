@@ -14,15 +14,14 @@ callbackServer.set('httpsport', config.server.https);
 const options  = {
     key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem', 'utf8'),
     cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem', 'utf8'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/chain.pem', 'utf8'),
-    port: callbackServer.get('port')
+    ca: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/chain.pem', 'utf8')
 };
 
-http.createServer(callbackServer).listen('80', function (err) {
+http.createServer(callbackServer).listen(callbackServer.get('httpport'), function (err) {
     if (err) throw err;
     console.log('Http listening on port ' + callbackServer.get('httpport'));
 });
-https.createServer(options, callbackServer).listen(function (err) {
+https.createServer(options, callbackServer).listen(callbackServer.get('httpsport'), function (err) {
     if (err) throw err;
     console.log('Https listening on port ' + callbackServer.get('httpsport'));
     console.log('key: ', options.key);
