@@ -103,7 +103,7 @@ function sendFile(username, filePath) {
     form.append('buffer', new Buffer(10));
     form.append('my_file', fs.createReadStream(filePath));
 
-    app.telegram.sendDocument(username.ctx.from.id, form);
+    app.telegram.sendDocument(username.ctx.id, form);
 }
 
 // app.command('quit', (ctx) => {
