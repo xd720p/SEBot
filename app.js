@@ -57,7 +57,7 @@ callbackServer.get('/', function (req, res, next) {
 function sendPostToTelegram(req) {
     let post = req.body.object.text;
 
-    app.telegram.sendMessage(37729716, post);
+    app.telegram.sendMessage('37729716', post);
 }
 
 function isVkApi(req) {
