@@ -12,7 +12,7 @@ callbackServer.set('port', config.server.port);
 
 const options  = {
     key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem')
+    cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem'),
     port: callbackServer.get('port')
 };
 
