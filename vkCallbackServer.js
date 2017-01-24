@@ -28,10 +28,10 @@ callbackServer.post('/', function (req, res, next) {
         res.send("208b5a5c");
    } else if (isVkNewPost(req)) {
        console.log('new_vk_post');
-       res.end(200, "ok");
+       res.status(200).send("ok");
    } else {
        console.log('other event');
-       res.end(200, "ok");
+       res.status(200).send("ok");
    }
 });
 
