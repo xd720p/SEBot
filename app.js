@@ -11,6 +11,8 @@ mongoose.connect(config.mongoDB.prefix + config.mongoDB.host + config.mongoDB.po
 
 let botDB = mongoose.connection;
 
+let vkCallbackServer = require('./vkCallbackServer').callbackServer;
+
 botDB.on('error', console.error.bind(console, 'connection error:'));
 botDB.once('open', function() {
     console.log('connected');

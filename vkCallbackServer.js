@@ -48,3 +48,5 @@ function isVkApi(req) {
 function isVkNewPost(req) {
     return req.body.type == config.vkposts.wall_post_new.type;
 }
+
+module.exports.callbackServer = callbackServer;
