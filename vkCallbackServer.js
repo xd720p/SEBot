@@ -18,7 +18,7 @@ const options  = {
 };
 
 
-callbackServer.server = https.createServer(callbackServer).listen(options, function (err) {
+https.createServer(callbackServer).listen(options, function (err) {
     if (err) throw err;
     console.log('Server listening on port ' + callbackServer.get('port'));
     console.log('key: ', options.key);
