@@ -9,19 +9,20 @@ let callbackServer = express();
 callbackServer.use(bodyParser.json());
 callbackServer.use(bodyParser.urlencoded({extended: false}));
 callbackServer.set('port', config.server.port);
-//
-// const options  = {
-//     key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem'),
-//     cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem'),
-//     port: callbackServer.get('port')
-// };
-
 
 const options  = {
-    key: fs.readFileSync('/home/sebot/vkapi.key'),
-    cert: fs.readFileSync('/home/sebot/vkapi.crt'),
+    key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem'),
+    ca: fs.readFileSync('/home/sebot/vkapi.crt'),
     port: callbackServer.get('port')
 };
+
+
+// const options  = {
+//     key: fs.readFileSync('/home/sebot/vkapi.key'),
+//     cert: fs.readFileSync('/home/sebot/vkapi.crt'),
+//     port: callbackServer.get('port')
+// };
 
 
 
