@@ -2,9 +2,9 @@
 //  * Created by xd720p on 20.01.2017.
 //  */
 // let mongoose = require('mongoose');
-// let config = require('./configs/config.json');
+// let vkConfig = require('./configs/vkConfig.json');
 // let User = require('./models/user').User;
-// mongoose.connect(config.mongoDB.prefix + config.mongoDB.host + config.mongoDB.port);
+// mongoose.connect(vkConfig.mongoDB.prefix + vkConfig.mongoDB.host + vkConfig.mongoDB.port);
 //
 // let botDB = mongoose.connection;
 //
