@@ -1,26 +1,30 @@
 let express = require('express');
-let http = require('http');
 let config = require('./configs/vkCallbackServerConfig.json');
 let bodyParser = require('body-parser');
-const fs = require('fs');
-const https = require('https');
+let fs = require('fs');
+let https = require('https');
+let http = require('http');
 
 let callbackServer = express();
 callbackServer.use(bodyParser.json());
 callbackServer.use(bodyParser.urlencoded({extended: false}));
-callbackServer.set('port', config.server.port);
+callbackServer.set('httpport', config.server.http);
+callbackServer.set('httpsport', config.server.https);
 
 const options  = {
-    key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/chain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem', 'utf8'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem', 'utf8'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/chain.pem', 'utf8'),
     port: callbackServer.get('port')
 };
 
-
-https.createServer(callbackServer).listen(options, function (err) {
+http.createServer(callbackServer).listen('80', function (err) {
     if (err) throw err;
-    console.log('Server listening on port ' + callbackServer.get('port'));
+    console.log('Http listening on port ' + callbackServer.get('httpport'));
+});
+https.createServer(options, callbackServer).listen(function (err) {
+    if (err) throw err;
+    console.log('Https listening on port ' + callbackServer.get('httpsport'));
     console.log('key: ', options.key);
     console.log('cert: ', options.cert);
     console.log('ca: ', options.ca);
