@@ -24,9 +24,6 @@ http.createServer(callbackServer).listen(callbackServer.get('httpport'), functio
 https.createServer(options, callbackServer).listen(callbackServer.get('httpsport'), function (err) {
     if (err) throw err;
     console.log('Https listening on port ' + callbackServer.get('httpsport'));
-    console.log('key: ', options.key);
-    console.log('cert: ', options.cert);
-    console.log('ca: ', options.ca);
 });
 
 callbackServer.post('/', function (req, res, next) {
