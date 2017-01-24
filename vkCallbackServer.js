@@ -27,8 +27,8 @@ callbackServer.post('/', function (req, res, next) {
    if (isVkApi(req)) {
         res.send("208b5a5c");
    } else if (isVkNewPost(req)) {
-       console.log('new_vk_post');
        res.status(200).send("ok");
+       console.log('new_vk_post');
    } else {
        console.log('other event');
        res.status(200).send("ok");
@@ -46,5 +46,5 @@ function isVkApi(req) {
 }
 
 function isVkNewPost(req) {
-    return req.body.type == config.vkposts.wall_post_new;
+    return req.body.type == config.vkposts.wall_post_new.type;
 }
