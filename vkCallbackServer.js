@@ -26,8 +26,12 @@ callbackServer.post('/', function (req, res, next) {
     console.log('Request: ', req.body);
    if (isVkApi(req)) {
         res.send("208b5a5c");
+   } else if (isVkNewPost(req)) {
+       console.log('new_vk_post');
+       res.end(200, "ok");
    } else {
-       res.send("false");
+       console.log('other event');
+       res.end(200, "ok");
    }
 });
 
@@ -38,10 +42,9 @@ callbackServer.get('/', function (req, res, next) {
 
 
 function isVkApi(req) {
+    return (req.body.type == config.vkposts.access.type && req.body.group_id == config.vkposts.access.group_id);
+}
 
-    if (req.body.type == config.vkposts.access.type && req.body.group_id == config.vkposts.access.group_id) {
-        return true;
-    }
-    return false;
-
+function isVkNewPost(req) {
+    return req.body.type == config.vkposts.wall_post_new;
 }
