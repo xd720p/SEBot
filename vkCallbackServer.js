@@ -31,6 +31,15 @@ callbackServer.post('/', function (req, res, next) {
    }
 });
 
+callbackServer.get('/', function (req, res, next) {
+    console.log('Request: ', req);
+    if (isVkApi(req)) {
+        res.send("208b5a5c");
+    } else {
+        res.send("false");
+    }
+});
+
 
 function isVkApi(req) {
 
