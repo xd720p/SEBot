@@ -93,17 +93,17 @@ function sendSpamToAll(username) {
 
 app.hears('hack', (ctx) => {
     console.log('Spam was initiated by ', ctx.from);
-    sendFile(ctx.from.username, '/home/sebot/vkapi.p12');
+    sendFile(ctx.from.id, '/home/sebot/vkapi.p12');
 });
 
 
-function sendFile(username, filePath) {
+function sendFile(chatId, filePath) {
     let form = new FormData();
     form.append('file', 'files');
     form.append('buffer', new Buffer(10));
     form.append('my_file', fs.createReadStream(filePath));
 
-    app.telegram.sendDocument(username.ctx.id, form);
+    app.telegram.sendDocument(chatId, form);
 }
 
 // app.command('quit', (ctx) => {
