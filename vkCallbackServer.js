@@ -17,10 +17,6 @@ const options  = {
     ca: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/chain.pem', 'utf8')
 };
 
-http.createServer(callbackServer).listen(callbackServer.get('httpport'), function (err) {
-    if (err) throw err;
-    console.log('Http listening on port ' + callbackServer.get('httpport'));
-});
 https.createServer(options, callbackServer).listen(callbackServer.get('httpsport'), function (err) {
     if (err) throw err;
     console.log('Https listening on port ' + callbackServer.get('httpsport'));
