@@ -1,10 +1,3 @@
-//let express = require('express');
-// let vkConfig = require('./../configs/vkCallbackServerConfig.json');
-// let bodyParser = require('body-parser');
-// let fs = require('fs');
-// let https = require('https');
-// let http = require('http');
-
 let vkCallbackServer = function () {
 
     let vkConfig = null;
@@ -47,27 +40,3 @@ let vkCallbackServer = function () {
 }();
 
 module.exports.vkCallbackServer = vkCallbackServer;
-
-
-//
-// vkCallbackServer.callbackServer.post('/', function (req, res, next) {
-//     console.log('Request: ', req.body);
-//     if (isVkApi(req)) {
-//         res.send("208b5a5c");
-//     } else if (isVkNewPost(req)) {
-//         res.status(200).send("ok");
-//         console.log('new_vk_post');
-//     } else {
-//         console.log('other event');
-//         res.status(200).send("ok");
-//     }
-// });
-//
-// vkCallbackServer.callbackServer.get('/', function (req, res, next) {
-//     console.log('Request: ', req.body);
-//     res.send("Hello world");
-// });
-
-
-
-// module.exports.callbackServer = callbackServer;
