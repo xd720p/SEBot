@@ -1,20 +1,11 @@
-let express = require('express');
-let config = require('./configs/appConfig.json');
-let telegramConfig = require('./configs/telegrammBotConfig.json');
-let mongoose = require('mongoose');
-
-const Telegraf = require('telegraf');
-
-const app = new Telegraf(telegramConfig.bot.token, {username: 'SENewsBot'});
-
-let User = require('./models/user').User;
-mongoose.connect(config.mongoDB.prefix + config.mongoDB.host + config.mongoDB.port);
-
-let botDB = mongoose.connection;
 
 let vkCallbackApi = require('./vk/vkCallbackServer').vkCallbackServer;
+let telegramBot = require('./telegram/telegramBot').telegramBot;
+
 vkCallbackApi.init();
 vkCallbackApi.makeServer();
+
+telegramBot.init();
 
 vkCallbackApi.callbackServer.post('/', function (req, res, next) {
     console.log('Request: ', req.body);
@@ -34,92 +25,86 @@ vkCallbackApi.callbackServer.get('/', function (req, res, next) {
     res.send("Hello world");
 });
 
-botDB.on('error', console.error.bind(console, 'connection error:'));
-botDB.once('open', function() {
-    console.log('connected');
-});
 
 
-app.command('start', (ctx) => {
+telegramBot.bot.command('start', (ctx) => {
     console.log('start', ctx.from);
-    saveUserToBd(ctx);
+    telegramBot.saveUserToBd(ctx);
 
 });
 
-app.command('quit', (ctx) => {
+telegramBot.bot.command('quit', (ctx) => {
     console.log('start', ctx.from);
-    saveUserToBd(ctx);
+    telegramBot.saveUserToBd(ctx);
 
 });
 
-function saveUserToBd(ctx) {
-    let user = new User({
-        _id: ctx.from.id,
-        first_name: ctx.from.first_name,
-        last_name: ctx.from.last_name,
-        username: ctx.from.username,
-        subscription: true
-    });
+// function saveUserToBd(ctx) {
+//     let user = new User({
+//         _id: ctx.from.id,
+//         first_name: ctx.from.first_name,
+//         last_name: ctx.from.last_name,
+//         username: ctx.from.username,
+//         subscription: true
+//     });
+//
+//     User.findOne({_id: ctx.from.id}, function (err, result) {
+//        if (!result) {
+//           user.save (function(err, savedUser, affected) {
+//                if (err) {
+//                    throw err;
+//                } else {
+//                    console.log(savedUser);
+//                    ctx.reply(greetings(ctx, 'Welcome, '))
+//                }
+//            });
+//        } else {
+//            ctx.reply(greetings(ctx, 'Welcome back, '));
+//        }
+//     });
+//
+// }
 
-    User.findOne({_id: ctx.from.id}, function (err, result) {
-       if (!result) {
-          user.save (function(err, savedUser, affected) {
-               if (err) {
-                   throw err;
-               } else {
-                   console.log(savedUser);
-                   ctx.reply(greetings(ctx, 'Welcome, '))
-               }
-           });
-       } else {
-           ctx.reply(greetings(ctx, 'Welcome back, '));
-       }
-    });
+// function greetings(ctx, message) {
+//     if (ctx.from.first_name != undefined) {
+//         if (ctx.from.last_name != undefined) {
+//             return message +  ctx.from.first_name + ' ' + ctx.from.last_name;
+//         } else if (ctx.from.username != undefined) {
+//             return message +  ctx.from.username;
+//         } else {
+//             return message +  ctx.from.first_name;
+//         }
+//     } else {
+//         return message +  ctx.from.username;
+//     }
+// }
 
-
-}
-
-function greetings(ctx, message) {
-    if (ctx.from.first_name != undefined) {
-        if (ctx.from.last_name != undefined) {
-            return message +  ctx.from.first_name + ' ' + ctx.from.last_name;
-        } else if (ctx.from.username != undefined) {
-            return message +  ctx.from.username;
-        } else {
-            return message +  ctx.from.first_name;
-        }
-    } else {
-        return message +  ctx.from.username;
-    }
-}
-
-app.command('help', (ctx) => {
+telegramBot.bot.command('help', (ctx) => {
     console.log('help', ctx.from);
-    ctx.reply('This is help!');
+    telegramBot.reply(ctx, 'This is help!');
 
 });
 
-app.hears('spam', (ctx) => {
+telegramBot.bot.hears('spam', (ctx) => {
     console.log('Spam was initiated by ', ctx.from);
-    sendSpamToAll(ctx.from.username);
+    telegramBot.sendSpamToAll(ctx.from.username);
 });
+//
+// function sendSpamToAll(username) {
+//     User.find({subscription: true}, function (err, foundUsers) {
+//         foundUsers.forEach(function (item, i, arr) {
+//             app.telegram.sendMessage(item._id, "Spam from @" + username);
+//         })
+//     });
+// }
+//
 
-function sendSpamToAll(username) {
-    User.find({subscription: true}, function (err, foundUsers) {
-        foundUsers.forEach(function (item, i, arr) {
-            app.telegram.sendMessage(item._id, "Spam from @" + username);
-        })
-    });
-}
-
-
-app.catch((err) => {
+telegramBot.bot.catch((err) => {
     //ctx.reply('Shit happens. Soon all will be fixed');
     console.log('Ooops', err)
 });
 
-
-app.startPolling();
+telegramBot.bot.startPolling();
 
 
 module.exports = app;
