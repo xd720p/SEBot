@@ -107,4 +107,4 @@ telegramBot.bot.catch((err) => {
 telegramBot.bot.startPolling();
 
 
-module.exports = app;
+// module.exports = app;
