@@ -41,7 +41,7 @@ let vkCallbackServer = function () {
         }
     }
 
-};
+}();
 
 module.exports.vkCallbackServer = vkCallbackServer;
 
