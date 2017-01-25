@@ -11,7 +11,7 @@ let vkCallbackServer = function () {
     let https = null;
     let http = null;
     let callbackServer = null;
-    let that = this;
+
     return {
         init: function () {
             let express = require('express');
@@ -19,11 +19,11 @@ let vkCallbackServer = function () {
             vkConfig = require('./../configs/vkCallbackServerConfig.json');
             https = require('https');
             http = require('http');
-            that.callbackServer = express();
-            that.callbackServer.use(bodyParser.json());
-            that.callbackServer.use(bodyParser.urlencoded({extended: false}));
-            that.callbackServer.set('httpport', vkConfig.server.http);
-            that.callbackServer.set('httpsport', vkConfig.server.https);
+            this.callbackServer = express();
+            this.callbackServer.use(bodyParser.json());
+            this.callbackServer.use(bodyParser.urlencoded({extended: false}));
+            this.callbackServer.set('httpport', vkConfig.server.http);
+            this.callbackServer.set('httpsport', vkConfig.server.https);
         },
 
         makeServer: function () {
@@ -34,9 +34,9 @@ let vkCallbackServer = function () {
                 ca: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/chain.pem', 'utf8')
             };
 
-            https.createServer(options, that.callbackServer).listen(that.callbackServer.get('httpsport'), function (err) {
+            https.createServer(options, this.callbackServer).listen(this.callbackServer.get('httpsport'), function (err) {
                 if (err) throw err;
-                console.log('Https listening on port ' + that.callbackServer.get('httpsport'));
+                console.log('Https listening on port ' + this.callbackServer.get('httpsport'));
             });
         }
     }
@@ -45,7 +45,9 @@ let vkCallbackServer = function () {
 
 module.exports.vkCallbackServer = vkCallbackServer;
 
-let p = new vkCallbackServer;
+let p = vkCallbackServer;
+p.init();
+p.makeServer();
 
 p.callbackServer.post('/', function (req, res, next) {
     console.log('Request: ', req.body);
