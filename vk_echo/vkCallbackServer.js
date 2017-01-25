@@ -10,23 +10,22 @@ let vkCallbackServer = function () {
     let vkConfig = null;
     let https = null;
     let http = null;
-    let callbackServer = null;
+    let that = {};
+    that.init = function () {
+        let express = require('express');
+        let bodyParser = require('body-parser');
+        vkConfig = require('./../configs/vkCallbackServerConfig.json');
+        https = require('https');
+        http = require('http');
+        that.callbackServer = express();
+        that.callbackServer.use(bodyParser.json());
+        that.callbackServer.use(bodyParser.urlencoded({extended: false}));
+        that.callbackServer.set('httpport', vkConfig.server.http);
+        that.callbackServer.set('httpsport', vkConfig.server.https);
 
-    return {
-        init: function () {
-            let express = require('express');
-            let bodyParser = require('body-parser');
-            vkConfig = require('./../configs/vkCallbackServerConfig.json');
-            https = require('https');
-            http = require('http');
-            this.callbackServer = express();
-            this.callbackServer.use(bodyParser.json());
-            this.callbackServer.use(bodyParser.urlencoded({extended: false}));
-            this.callbackServer.set('httpport', vkConfig.server.http);
-            this.callbackServer.set('httpsport', vkConfig.server.https);
-        },
+    },
 
-        makeServer: function () {
+        that.makeServer = function () {
             let fs = require('fs');
             let options = {
                 key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem', 'utf8'),
@@ -34,35 +33,38 @@ let vkCallbackServer = function () {
                 ca: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/chain.pem', 'utf8')
             };
 
-            https.createServer(options, this.callbackServer).listen(this.callbackServer.get('httpsport'), function (err) {
+            https.createServer(options, that.callbackServer).listen(that.callbackServer.get('httpsport'), function (err) {
                 if (err) throw err;
-                console.log('Https listening on port ' + this.callbackServer.get('httpsport'));
+                console.log('Https listening on port ' + that.callbackServer.get('httpsport'));
             });
+
         }
-    }
+    return that;
+
 
 }();
 
 module.exports.vkCallbackServer = vkCallbackServer;
 
-let p = vkCallbackServer;
-p.init();
-p.makeServer();
 
-p.callbackServer.post('/', function (req, res, next) {
+vkCallbackServer.init();
+vkCallbackServer.makeServer();
+
+
+vkCallbackServer.callbackServer.post('/', function (req, res, next) {
     console.log('Request: ', req.body);
-   if (isVkApi(req)) {
+    if (isVkApi(req)) {
         res.send("208b5a5c");
-   } else if (isVkNewPost(req)) {
-       res.status(200).send("ok");
-       console.log('new_vk_post');
-   } else {
-       console.log('other event');
-       res.status(200).send("ok");
-   }
+    } else if (isVkNewPost(req)) {
+        res.status(200).send("ok");
+        console.log('new_vk_post');
+    } else {
+        console.log('other event');
+        res.status(200).send("ok");
+    }
 });
 
-p.callbackServer.get('/', function (req, res, next) {
+vkCallbackServer.callbackServer.get('/', function (req, res, next) {
     console.log('Request: ', req.body);
     res.send("Hello world");
 });
