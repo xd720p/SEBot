@@ -1,17 +1,18 @@
 let express = require('express');
-let config = require('./configs/config.json');
+let config = require('./configs/appConfig.json');
+let telegramConfig = require('./configs/telegrammBotConfig.json');
 let mongoose = require('mongoose');
 
 const Telegraf = require('telegraf');
 
-const app = new Telegraf(config.bot.token, {username: 'SENewsBot'});
+const app = new Telegraf(telegramConfig.bot.token, {username: 'SENewsBot'});
 
 let User = require('./models/user').User;
 mongoose.connect(config.mongoDB.prefix + config.mongoDB.host + config.mongoDB.port);
 
 let botDB = mongoose.connection;
 
-let vkCallbackApi = require('./vk_echo/vkCallbackServer').vkCallbackServer;
+let vkCallbackApi = require('./vk/vkCallbackServer').vkCallbackServer;
 vkCallbackApi.init();
 vkCallbackApi.makeServer();
 
