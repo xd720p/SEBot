@@ -23,22 +23,24 @@ let vkCallbackServer = function () {
         that.callbackServer.set('httpport', vkConfig.server.http);
         that.callbackServer.set('httpsport', vkConfig.server.https);
 
-    },
+    }, that.makeServer = function () {
+        let fs = require('fs');
+        let options = {
+            key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem', 'utf8'),
+            cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem', 'utf8'),
+            ca: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/chain.pem', 'utf8')
+        };
 
-        that.makeServer = function () {
-            let fs = require('fs');
-            let options = {
-                key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem', 'utf8'),
-                cert: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/cert.pem', 'utf8'),
-                ca: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/chain.pem', 'utf8')
-            };
+        https.createServer(options, that.callbackServer).listen(that.callbackServer.get('httpsport'), function (err) {
+            if (err) throw err;
+            console.log('Https listening on port ' + that.callbackServer.get('httpsport'));
+        });
 
-            https.createServer(options, that.callbackServer).listen(that.callbackServer.get('httpsport'), function (err) {
-                if (err) throw err;
-                console.log('Https listening on port ' + that.callbackServer.get('httpsport'));
-            });
-
-        }
+    }, that.isVkApi = function(req) {
+        return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
+    }, that.isVkNewPost = function(req) {
+        return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
+    };
     return that;
 
 
@@ -50,33 +52,25 @@ module.exports.vkCallbackServer = vkCallbackServer;
 vkCallbackServer.init();
 vkCallbackServer.makeServer();
 
+//
+// vkCallbackServer.callbackServer.post('/', function (req, res, next) {
+//     console.log('Request: ', req.body);
+//     if (isVkApi(req)) {
+//         res.send("208b5a5c");
+//     } else if (isVkNewPost(req)) {
+//         res.status(200).send("ok");
+//         console.log('new_vk_post');
+//     } else {
+//         console.log('other event');
+//         res.status(200).send("ok");
+//     }
+// });
+//
+// vkCallbackServer.callbackServer.get('/', function (req, res, next) {
+//     console.log('Request: ', req.body);
+//     res.send("Hello world");
+// });
 
-vkCallbackServer.callbackServer.post('/', function (req, res, next) {
-    console.log('Request: ', req.body);
-    if (isVkApi(req)) {
-        res.send("208b5a5c");
-    } else if (isVkNewPost(req)) {
-        res.status(200).send("ok");
-        console.log('new_vk_post');
-    } else {
-        console.log('other event');
-        res.status(200).send("ok");
-    }
-});
-
-vkCallbackServer.callbackServer.get('/', function (req, res, next) {
-    console.log('Request: ', req.body);
-    res.send("Hello world");
-});
-
-
-function isVkApi(req) {
-    return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
-}
-
-function isVkNewPost(req) {
-    return req.body.type == vkConfig.vkposts.wall_post_new.type;
-}
 
 
 // module.exports.callbackServer = callbackServer;

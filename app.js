@@ -12,7 +12,26 @@ mongoose.connect(config.mongoDB.prefix + config.mongoDB.host + config.mongoDB.po
 let botDB = mongoose.connection;
 
 let vkCallbackApi = require('./vk_echo/vkCallbackServer').vkCallbackServer;
+vkCallbackApi.init();
+vkCallbackApi.makeServer();
 
+vkCallbackApi.callbackServer.post('/', function (req, res, next) {
+    console.log('Request: ', req.body);
+    if (vkCallbackApi.isVkApi(req)) {
+        res.send("208b5a5c");
+    } else if (vkCallbackApi.isVkNewPost(req)) {
+        res.status(200).send("ok");
+        console.log('new_vk_post');
+    } else {
+        console.log('other event');
+        res.status(200).send("ok");
+    }
+});
+
+vkCallbackApi.callbackServer.get('/', function (req, res, next) {
+    console.log('Request: ', req.body);
+    res.send("Hello world");
+});
 
 botDB.on('error', console.error.bind(console, 'connection error:'));
 botDB.once('open', function() {
