@@ -49,9 +49,6 @@ let vkCallbackServer = function () {
 module.exports.vkCallbackServer = vkCallbackServer;
 
 
-vkCallbackServer.init();
-vkCallbackServer.makeServer();
-
 //
 // vkCallbackServer.callbackServer.post('/', function (req, res, next) {
 //     console.log('Request: ', req.body);
