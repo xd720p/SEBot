@@ -10,7 +10,7 @@ let vkCallbackServer = function () {
     let vkConfig = null;
     let https = null;
     let http = null;
-
+    let callbackServer = null;
     return {
         init: function () {
             let express = require('express');
