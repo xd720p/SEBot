@@ -79,7 +79,8 @@ let vkCallbackServer = function () {
         let reqUrl = 'https://api.vk.com/method/users.get?user_id=' + userId;
         request(reqUrl, function(error, response, body) {
             console.log(body);
-            callback("Hello", null);
+            let userFI = body.response[0].first_name + ' ' + body.response[0].last_name;
+            callback(userFI, null);
         });
     };
     
