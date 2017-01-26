@@ -66,7 +66,7 @@ let vkCallbackServer = function () {
     };
     sendMessageToBot = function (req) {
         let userId = req.body.object.created_by;
-        let userFI = getUserFI(userId, function (data, err) {
+        getUserFI(userId, function (data, err) {
             if (err) console.log('error');
             else {
                 let message = data + req.body.object.text;
@@ -83,11 +83,11 @@ let vkCallbackServer = function () {
             let userFI = null;
 
             if (json.response[0].sex == 1) {
-                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написала: '
+                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написала: \n'
             } else if (json.response[0].sex == 2) {
-               userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написал: '
+               userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написал: \n'
             } else {
-                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написало: '
+                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написало: \n'
             }
             callback(userFI, null);
         });
