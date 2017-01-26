@@ -39,8 +39,7 @@ let telegramBot = function () {
 
         that.bot.command('help', (ctx) => {
             console.log('help', ctx.from);
-            telegramBot.reply(ctx, 'This is help!');
-
+            telegramBot.replyToSender(ctx, 'This is help!');
         });
 
         that.bot.catch((err) => {
@@ -89,11 +88,13 @@ let telegramBot = function () {
                 that.bot.telegram.sendMessage(item._id, message);
             })
         });
-    }, that.reply = function (ctx, message) {
+    };
+    that.replyToSender = function (ctx, message) {
             ctx.reply(message);
-    }, that.reply = function (message) {
+    };
+    that.reply = function (message) {
         that.bot.telegram.sendMessage(37729716, message);
-    }
+    };
 
     return that;
 }();
