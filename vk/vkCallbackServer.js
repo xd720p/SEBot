@@ -5,7 +5,7 @@ let vkCallbackServer = function () {
     let http = null;
     let that = {};
     let listener = null;
-    that.init = function () {
+    that.init = function (listner) {
         let express = require('express');
         let bodyParser = require('body-parser');
         vkConfig = require('./../configs/vkCallbackServerConfig.json');
@@ -16,6 +16,7 @@ let vkCallbackServer = function () {
         that.callbackServer.use(bodyParser.urlencoded({extended: false}));
         that.callbackServer.set('httpport', vkConfig.server.http);
         that.callbackServer.set('httpsport', vkConfig.server.https);
+        listener = listner;
 
     }
     that.makeServer = function () {

@@ -5,7 +5,13 @@ let telegramBot = require('./telegram/telegramBot').telegramBot;
 vkCallbackApi.init();
 vkCallbackApi.makeServer();
 
-telegramBot.init();
+let listener = {
+    onNewPost: function (req) {
+        telegramBot.reply(req.body.object.text);
+    }
+};
+
+telegramBot.init(listener);
 
 vkCallbackApi.callbackServer.post('/', function (req, res, next) {
     console.log('Request: ', req.body);
@@ -25,11 +31,7 @@ vkCallbackApi.callbackServer.get('/', function (req, res, next) {
     res.send("Hello world");
 });
 
-let listener = {
-   onNewPost: function (req) {
-       telegramBot.reply(req.body.object.text);
-   }
-};
+
 
 
 
