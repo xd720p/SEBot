@@ -17,7 +17,8 @@ let vkCallbackServer = function () {
         that.callbackServer.set('httpport', vkConfig.server.http);
         that.callbackServer.set('httpsport', vkConfig.server.https);
 
-    }, that.makeServer = function () {
+    }
+    that.makeServer = function () {
         let fs = require('fs');
         let options = {
             key: fs.readFileSync('/etc/letsencrypt/live/136335.simplecloud.club/privkey.pem', 'utf8'),
@@ -30,25 +31,30 @@ let vkCallbackServer = function () {
             console.log('Https listening on port ' + that.callbackServer.get('httpsport'));
         });
 
-    }, that.isVkApi = function(req) {
+        that.callbackServer.post ('/', function () {
+            console.log('Request: ', req.body);
+            if (that.isVkApi(req)) {
+                res.send("208b5a5c");
+            } else if (that.isVkNewPost(req)) {
+                res.status(200).send("ok");
+                console.log('new_vk_post');
+                listener.onNewPost(req);
+            } else {
+                console.log('other event');
+                res.status(200).send("ok");
+            }
+        });
+
+    }
+    that.isVkApi = function(req) {
         return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
-    }, that.isVkNewPost = function(req) {
+    }
+    that.isVkNewPost = function(req) {
         return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
-    }, that.parsePost = function (req) {
+    }
+    that.parsePost = function (req) {
         return req.body.text;
-    }, that.callbackServer.post ('/', function () {
-        console.log('Request: ', req.body);
-        if (that.isVkApi(req)) {
-            res.send("208b5a5c");
-        } else if (that.isVkNewPost(req)) {
-            res.status(200).send("ok");
-            console.log('new_vk_post');
-            listener.onNewPost(req);
-        } else {
-            console.log('other event');
-            res.status(200).send("ok");
-        }
-    });
+    }
     return that;
 
 
