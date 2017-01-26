@@ -21,6 +21,32 @@ let telegramBot = function () {
         botDB.once('open', function () {
             console.log('connected');
         });
+
+
+
+        that.bot.command('start', (ctx) => {
+            console.log('start', ctx.from);
+            telegramBot.saveUserToBd(ctx);
+
+        });
+
+        that.bot.command('quit', (ctx) => {
+            console.log('start', ctx.from);
+            telegramBot.saveUserToBd(ctx);
+
+        });
+
+
+        that.bot.command('help', (ctx) => {
+            console.log('help', ctx.from);
+            telegramBot.reply(ctx, 'This is help!');
+
+        });
+
+        that.bot.catch((err) => {
+
+            console.log('Ooops', err)
+        });
     }, that.saveUserToBd = function (ctx) {
         let user = new User({
             _id: ctx.from.id,

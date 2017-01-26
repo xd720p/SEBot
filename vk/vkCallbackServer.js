@@ -46,6 +46,12 @@ let vkCallbackServer = function () {
             }
         });
 
+        that.callbackServer.get('/', function (req, res, next) {
+            console.log('Request: ', req.body);
+            res.send("Hello world");
+        });
+
+
     }
     that.isVkApi = function(req) {
         return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
