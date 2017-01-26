@@ -40,7 +40,7 @@ let telegramBot = function () {
             telegramBot.replyToSender(ctx, 'This is help!');
         });
 
-        that.bot.onText(/\/echo (.+)/, function (msg, match) {
+        that.bot.telegram.onText(/\/echo (.+)/, function (msg, match) {
             telegramBot.replyToSender(msg.chat.id, match[1]);
         });
 
