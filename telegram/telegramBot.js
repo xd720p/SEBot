@@ -40,9 +40,10 @@ let telegramBot = function () {
             telegramBot.replyToSender(ctx, 'This is help!');
         });
 
-        that.bot.command('echo', function (msg, match) {
-            telegramBot.replyToSender(msg.chat.id, match[1]);
-        });
+        that.bot.command('echo', (ctx) => {
+            console.log('echo', ctx.from);
+            that.replyToSender(ctx.from, ctx.message);
+        }
 
         that.bot.catch((err) => {
 
