@@ -29,7 +29,7 @@ let listener = {
    onNewPost: function (req) {
        telegramBot.reply(req.body.object.text);
    }
-}();
+};
 
 
 
