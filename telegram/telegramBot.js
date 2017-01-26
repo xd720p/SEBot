@@ -42,7 +42,7 @@ let telegramBot = function () {
 
         that.bot.command('echo', (ctx) => {
             console.log('echo', ctx.from);
-            that.replyToSender(ctx, ctx.message.text);
+            that.replyToSender(ctx, ctx.message.text.replace('/echo', ""));
         });
 
         that.bot.catch((err) => {
