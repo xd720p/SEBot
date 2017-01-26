@@ -13,18 +13,6 @@ vkCallbackApi.init(listener);
 vkCallbackApi.makeServer();
 telegramBot.init();
 
-vkCallbackApi.callbackServer.post('/', function (req, res, next) {
-    console.log('Request: ', req.body);
-    if (vkCallbackApi.isVkApi(req)) {
-        res.send("208b5a5c");
-    } else if (vkCallbackApi.isVkNewPost(req)) {
-        res.status(200).send("ok");
-        console.log('new_vk_post');
-    } else {
-        console.log('other event');
-        res.status(200).send("ok");
-    }
-});
 
 vkCallbackApi.callbackServer.get('/', function (req, res, next) {
     console.log('Request: ', req.body);
