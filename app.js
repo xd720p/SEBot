@@ -2,16 +2,16 @@
 let vkCallbackApi = require('./vk/vkCallbackServer').vkCallbackServer;
 let telegramBot = require('./telegram/telegramBot').telegramBot;
 
-vkCallbackApi.init();
-vkCallbackApi.makeServer();
+
 
 let listener = {
     onNewPost: function (req) {
         telegramBot.reply(req.body.object.text);
     }
 };
-
-telegramBot.init(listener);
+vkCallbackApi.init(listener);
+vkCallbackApi.makeServer();
+telegramBot.init();
 
 vkCallbackApi.callbackServer.post('/', function (req, res, next) {
     console.log('Request: ', req.body);
