@@ -77,7 +77,7 @@ let vkCallbackServer = function () {
 
     getUserFI = function (userId, callback) {
         let reqUrl = 'https://api.vk.com/method/users.get?user_id=' + userId;
-        request(reqUrl, function(error, response, body) {
+        request(reqUrl, function(error, responsee, body) {
             console.log(body);
             let userFI = body.response[0].first_name + ' ' + body.response[0].last_name;
             callback(userFI, null);
