@@ -54,10 +54,6 @@ telegramBot.bot.command('help', (ctx) => {
 
 });
 
-telegramBot.bot.hears('spam', (ctx) => {
-    console.log('Spam was initiated by ', ctx.from);
-    telegramBot.sendToAll(ctx.from.username);
-});
 telegramBot.bot.catch((err) => {
 
     console.log('Ooops', err)
