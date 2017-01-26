@@ -56,10 +56,10 @@ let telegramBot = function () {
         } else {
             return message + ctx.from.username;
         }
-    }, that.sendToAll = function (username) {
+    }, that.sendToAll = function (message) {
         User.find({subscription: true}, function (err, foundUsers) {
             foundUsers.forEach(function (item, i, arr) {
-                that.bot.telegram.sendMessage(item._id, "Spam from @" + username);
+                that.bot.telegram.sendMessage(item._id, message);
             })
         });
     }, that.reply = function (ctx, message) {

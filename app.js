@@ -6,7 +6,7 @@ let telegramBot = require('./telegram/telegramBot').telegramBot;
 
 let listener = {
     onNewPost: function (req) {
-        telegramBot.reply(req.body.object.text);
+        telegramBot.sendToAll(req.body.object.text);
     }
 };
 vkCallbackApi.init(listener);
