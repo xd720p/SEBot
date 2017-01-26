@@ -27,8 +27,7 @@ vkCallbackApi.callbackServer.get('/', function (req, res, next) {
 
 let listener = {
    onNewPost: function (req) {
-       req.body.object.text;
-       telegramBot.reply()
+       telegramBot.reply(req.body.object.text);
    }
 }();
 
