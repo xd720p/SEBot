@@ -50,7 +50,7 @@ let vkCallbackServer = function () {
         return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
     }
     that.isVkNewPost = function(req) {
-        return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
+        return (req.body.type == vkConfig.vkposts.wall_post_new.type && req.body.group_id == vkConfig.vkposts.wall_post_new.group_id);
     }
     that.parsePost = function (req) {
         return req.body.text;
