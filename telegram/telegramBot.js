@@ -92,7 +92,7 @@ let telegramBot = function () {
         });
     };
     that.replyToSender = function (ctx, message) {
-            ctx.reply(message);
+        that.bot.telegram.sendMessage(ctx.from, message);
     };
     that.reply = function (message) {
         that.bot.telegram.sendMessage(37729716, message);
