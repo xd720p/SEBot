@@ -63,12 +63,9 @@ let telegramBot = function () {
             })
         });
     }, that.reply = function (ctx, message) {
-        if (ctx != null) {
             ctx.reply(message);
-        } else {
-            that.bot.telegram.sendMessage(37729716, message);
-        }
-
+    }, that.reply = function (message) {
+        that.bot.telegram.sendMessage(37729716, message);
     }
 
     return that;
