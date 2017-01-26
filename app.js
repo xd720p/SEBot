@@ -25,6 +25,13 @@ vkCallbackApi.callbackServer.get('/', function (req, res, next) {
     res.send("Hello world");
 });
 
+let listener = {
+   onNewPost: function (req) {
+       req.body.object.text;
+       telegramBot.reply()
+   }
+}();
+
 
 
 telegramBot.bot.command('start', (ctx) => {
@@ -48,7 +55,7 @@ telegramBot.bot.command('help', (ctx) => {
 
 telegramBot.bot.hears('spam', (ctx) => {
     console.log('Spam was initiated by ', ctx.from);
-    telegramBot.sendSpamToAll(ctx.from.username);
+    telegramBot.sendToAll(ctx.from.username);
 });
 telegramBot.bot.catch((err) => {
 

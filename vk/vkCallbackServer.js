@@ -4,6 +4,7 @@ let vkCallbackServer = function () {
     let https = null;
     let http = null;
     let that = {};
+    let listener = null;
     that.init = function () {
         let express = require('express');
         let bodyParser = require('body-parser');
@@ -33,10 +34,29 @@ let vkCallbackServer = function () {
         return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
     }, that.isVkNewPost = function(req) {
         return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
-    };
+    }, that.parsePost = function (req) {
+        return req.body.text;
+    }, that.callbackServer.post ('/', function () {
+        console.log('Request: ', req.body);
+        if (that.isVkApi(req)) {
+            res.send("208b5a5c");
+        } else if (that.isVkNewPost(req)) {
+            res.status(200).send("ok");
+            console.log('new_vk_post');
+            listener.onNewPost(req);
+        } else {
+            console.log('other event');
+            res.status(200).send("ok");
+        }
+    });
     return that;
 
 
 }();
+//
+// vkCallbackServer.callbackServer.post('/', function (req, res, next) {
+//
+// });
+
 
 module.exports.vkCallbackServer = vkCallbackServer;

@@ -10,7 +10,7 @@ let telegramBot = function () {
     that.init = function () {
         let telegramConfig = require('.././configs/telegrammBotConfig.json');
         Telegraf = require('telegraf');
-        that.bot =  new Telegraf(telegramConfig.bot.token, {username: 'SENewsBot'});
+        that.bot = new Telegraf(telegramConfig.bot.token, {username: 'SENewsBot'});
         User = require('.././models/user').User;
         mongoose = require('mongoose');
         let config = require('.././configs/appConfig.json');
@@ -18,7 +18,7 @@ let telegramBot = function () {
         let botDB = mongoose.connection;
 
         botDB.on('error', console.error.bind(console, 'connection error:'));
-        botDB.once('open', function() {
+        botDB.once('open', function () {
             console.log('connected');
         });
     }, that.saveUserToBd = function (ctx) {
@@ -32,7 +32,7 @@ let telegramBot = function () {
 
         User.findOne({_id: ctx.from.id}, function (err, result) {
             if (!result) {
-                user.save (function(err, savedUser, affected) {
+                user.save(function (err, savedUser, affected) {
                     if (err) {
                         throw err;
                     } else {
@@ -47,23 +47,28 @@ let telegramBot = function () {
     }, that.greetings = function (ctx, message) {
         if (ctx.from.first_name != undefined) {
             if (ctx.from.last_name != undefined) {
-                return message +  ctx.from.first_name + ' ' + ctx.from.last_name;
+                return message + ctx.from.first_name + ' ' + ctx.from.last_name;
             } else if (ctx.from.username != undefined) {
-                return message +  ctx.from.username;
+                return message + ctx.from.username;
             } else {
-                return message +  ctx.from.first_name;
+                return message + ctx.from.first_name;
             }
         } else {
-            return message +  ctx.from.username;
+            return message + ctx.from.username;
         }
-    }, that.sendSpamToAll = function (username) {
+    }, that.sendToAll = function (username) {
         User.find({subscription: true}, function (err, foundUsers) {
             foundUsers.forEach(function (item, i, arr) {
-               that.bot.telegram.sendMessage(item._id, "Spam from @" + username);
+                that.bot.telegram.sendMessage(item._id, "Spam from @" + username);
             })
         });
     }, that.reply = function (ctx, message) {
-        ctx.reply(message);
+        if (ctx != null) {
+            ctx.reply(message);
+        } else {
+            that.bot.telegram.sendMessage(37729716, message);
+        }
+
     }
 
     return that;
