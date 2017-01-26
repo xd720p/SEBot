@@ -31,7 +31,7 @@ let vkCallbackServer = function () {
             console.log('Https listening on port ' + that.callbackServer.get('httpsport'));
         });
 
-        that.callbackServer.post ('/', function () {
+        that.callbackServer.post ('/', function (req, res, next) {
             console.log('Request: ', req.body);
             if (that.isVkApi(req)) {
                 res.send("208b5a5c");
