@@ -83,11 +83,11 @@ let vkCallbackServer = function () {
             let userFI = null;
 
             if (json.response[0].sex == 1) {
-                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + 'написала: '
+                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написала: '
             } else if (json.response[0].sex == 2) {
-               userFI = json.response[0].first_name + ' ' + json.response[0].last_name + 'написал: '
+               userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написал: '
             } else {
-                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + 'написало: '
+                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написало: '
             }
             callback(userFI, null);
         });
