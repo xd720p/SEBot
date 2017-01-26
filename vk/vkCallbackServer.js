@@ -69,7 +69,8 @@ let vkCallbackServer = function () {
         let userFI = getUserFI(userId, function (data, err) {
             if (err) console.log('error');
             else {
-                listener.onNewPost(data);
+                let message = data + ' написал: ' + req.body.object.text;
+                listener.onNewPost(message);
             }
         });
     };

@@ -5,8 +5,8 @@ let telegramBot = require('./telegram/telegramBot').telegramBot;
 
 
 let listener = {
-    onNewPost: function (req) {
-        telegramBot.sendToAll(req.body.object.text);
+    onNewPost: function (message) {
+        telegramBot.sendToAll(message);
     }
 
 };
