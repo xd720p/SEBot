@@ -5,6 +5,7 @@ let vkCallbackServer = function () {
     let http = null;
     let that = {};
     let listener = null;
+    let request = null;
     that.init = function (listner) {
         let express = require('express');
         let bodyParser = require('body-parser');
@@ -17,8 +18,8 @@ let vkCallbackServer = function () {
         that.callbackServer.set('httpport', vkConfig.server.http);
         that.callbackServer.set('httpsport', vkConfig.server.https);
         listener = listner;
-
-    }
+        request = require('request');
+    };
     that.makeServer = function () {
         let fs = require('fs');
         let options = {
@@ -39,7 +40,8 @@ let vkCallbackServer = function () {
             } else if (that.isVkNewPost(req)) {
                 res.status(200).send("ok");
                 console.log('new_vk_post');
-                listener.onNewPost(req);
+                sendMessageToBot(req);//https://api.vk.com/method/users.get?user_id=
+
             } else {
                 console.log('other event');
                 res.status(200).send("ok");
@@ -52,16 +54,34 @@ let vkCallbackServer = function () {
         });
 
 
-    }
+    };
     that.isVkApi = function(req) {
         return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
-    }
+    };
     that.isVkNewPost = function(req) {
         return (req.body.type == vkConfig.vkposts.wall_post_new.type && req.body.group_id == vkConfig.vkposts.wall_post_new.group_id);
-    }
+    };
     that.parsePost = function (req) {
         return req.body.text;
-    }
+    };
+    sendMessageToBot = function (req) {
+        let userId = req.body.object.created_by;
+        let userFI = getUserFI(uerId, function (data, err) {
+            if (err) console.log('error');
+            else {
+                listener.onNewPost(data);
+            }
+        });
+    };
+
+    getUserFI = function (userId, callback) {
+        let reqUrl = 'https://api.vk.com/method/users.get?user_id=' + userId;
+        request(reqUrl, function(error, response, body) {
+            console.log(body);
+            callback("Hello", null);
+        });
+    };
+    
     return that;
 
 

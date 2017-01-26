@@ -46,7 +46,6 @@ let telegramBot = function () {
             if (reply != '') {
                 that.replyToSender(ctx, reply);
             }
-
         });
 
         that.bot.catch((err) => {
