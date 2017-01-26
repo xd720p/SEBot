@@ -42,8 +42,9 @@ let telegramBot = function () {
 
         that.bot.command('echo', (ctx) => {
             console.log('echo', ctx.from);
-            if (ctx.message != '') {
-                that.replyToSender(ctx, ctx.message.text.replace('/echo', ""));
+            let reply = ctx.message.text.replace('/echo', "");
+            if (reply != '') {
+                that.replyToSender(ctx, reply);
             }
 
         });
