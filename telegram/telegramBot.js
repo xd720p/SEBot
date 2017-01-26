@@ -59,6 +59,7 @@ let telegramBot = function () {
     }, that.sendToAll = function (message) {
         User.find({subscription: true}, function (err, foundUsers) {
             foundUsers.forEach(function (item, i, arr) {
+                console.log("usernam: ", item.username);
                 that.bot.telegram.sendMessage(item._id, message);
             })
         });
