@@ -22,8 +22,6 @@ let telegramBot = function () {
             console.log('connected');
         });
 
-
-
         that.bot.command('start', (ctx) => {
             console.log('start', ctx.from);
             telegramBot.saveUserToBd(ctx);
@@ -40,6 +38,10 @@ let telegramBot = function () {
         that.bot.command('help', (ctx) => {
             console.log('help', ctx.from);
             telegramBot.replyToSender(ctx, 'This is help!');
+        });
+
+        that.bot.onText(/\/echo (.+)/, function (msg, match) {
+            telegramBot.replyToSender(msg.chat.id, match[1]);
         });
 
         that.bot.catch((err) => {
