@@ -69,18 +69,26 @@ let vkCallbackServer = function () {
         let userFI = getUserFI(userId, function (data, err) {
             if (err) console.log('error');
             else {
-                let message = data + ' написал: ' + req.body.object.text;
+                let message = data + req.body.object.text;
                 listener.onNewPost(message);
             }
         });
     };
 
     getUserFI = function (userId, callback) {
-        let reqUrl = 'https://api.vk.com/method/users.get?user_id=' + userId;
+        let reqUrl = 'https://api.vk.com/method/users.get?user_id=' + userId + '&fields=sex';
         request(reqUrl, function(error, response, body) {
             let json = JSON.parse(body);
            // console.log(body.response);
-            let userFI = json.response[0].first_name + ' ' + json.response[0].last_name;
+            let userFI = null;
+
+            if (json.response[0].sex == 1) {
+                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + 'написала: '
+            } else if (json.response[0].sex == 2) {
+               userFI = json.response[0].first_name + ' ' + json.response[0].last_name + 'написал: '
+            } else {
+                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + 'написало: '
+            }
             callback(userFI, null);
         });
     };
