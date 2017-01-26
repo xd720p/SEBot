@@ -66,7 +66,7 @@ let vkCallbackServer = function () {
     };
     sendMessageToBot = function (req) {
         let userId = req.body.object.created_by;
-        let userFI = getUserFI(uerId, function (data, err) {
+        let userFI = getUserFI(userId, function (data, err) {
             if (err) console.log('error');
             else {
                 listener.onNewPost(data);
