@@ -6,6 +6,7 @@ let vkCallbackServer = function () {
     let that = {};
     let listener = null;
     let request = null;
+    let date = null;
     that.init = function (listner) {
         let express = require('express');
         let bodyParser = require('body-parser');
@@ -69,7 +70,10 @@ let vkCallbackServer = function () {
         getUserFI(userId, function (data, err) {
             if (err) console.log('error');
             else {
-                let message = data + req.body.object.text;
+                date = new Date(req.body.object.date);
+                let hours = date.getHours() + ':' +date.getMinutes();
+                let day = date.getDay() + '.' + date.getMonth() + '.' + date.getYear();
+                let message = day + ' в ' + hours + '\n' + data + req.body.object.text;
                 listener.onNewPost(message);
             }
         });
