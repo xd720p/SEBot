@@ -37,7 +37,7 @@ let vkCallbackServer = function () {
         that.callbackServer.post('/', function (req, res, next) {
             console.log('Request: ', req.body);
             if (that.isVkApi(req)) {
-                res.send("208b5a5c");
+                res.send(vkConfig.vkposts.access.reply);
             } else if (that.isVkNewPost(req)) {
                 res.status(200).send("ok");
                 console.log('new_vk_post');
