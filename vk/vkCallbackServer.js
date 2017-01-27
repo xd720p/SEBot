@@ -78,7 +78,7 @@ let vkCallbackServer = function () {
     };
 
     makeDate = function (inputDate) {
-        date = new Date(req.body.object.date * 1000);
+        date = new Date(inputDate);
         let minutes = date.getUTCMinutes();
 
         if (minutes < 10) {
