@@ -34,7 +34,7 @@ let vkCallbackServer = function () {
             console.log('Https listening on port ' + that.callbackServer.get('httpsport'));
         });
 
-        that.callbackServer.post ('/', function (req, res, next) {
+        that.callbackServer.post('/', function (req, res, next) {
             console.log('Request: ', req.body);
             if (that.isVkApi(req)) {
                 res.send("208b5a5c");
@@ -56,10 +56,10 @@ let vkCallbackServer = function () {
 
 
     };
-    that.isVkApi = function(req) {
+    that.isVkApi = function (req) {
         return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
     };
-    that.isVkNewPost = function(req) {
+    that.isVkNewPost = function (req) {
         return (req.body.type == vkConfig.vkposts.wall_post_new.type && req.body.group_id == vkConfig.vkposts.wall_post_new.group_id);
     };
     that.parsePost = function (req) {
@@ -67,36 +67,47 @@ let vkCallbackServer = function () {
     };
     sendMessageToBot = function (req) {
         let userId = req.body.object.created_by;
-        getUserFI(userId, function (data, err) {
+        getUserFI(userId, function (username, err) {
             if (err) console.log('error');
             else {
-                date = new Date(req.body.object.date * 1000);
-                let hours = date.getUTCHours() + ':' + date.getUTCMinutes();
-                let day = date.getUTCDate() + '.' + date.getUTCMonth()+1 + '.' + date.getUTCFullYear();
-                let message = day + ' в ' + hours + '\n' + data + req.body.object.text;
+                let date = makeDate(req.body.object.date * 1000);
+                let message = date + username + req.body.object.text;
                 listener.onNewPost(message);
             }
         });
     };
 
+    makeDate = function (inputDate) {
+        date = new Date(req.body.object.date * 1000);
+        let minutes = date.getUTCMinutes();
+
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        }
+
+        let time = date.getUTCHours() + 3 + ':' + minutes;
+        let day = date.getUTCDate() + '.' + date.getUTCMonth() + 1 + '.' + date.getUTCFullYear();
+        return day + ' в ' + time;
+    };
+
     getUserFI = function (userId, callback) {
         let reqUrl = 'https://api.vk.com/method/users.get?user_id=' + userId + '&fields=sex';
-        request(reqUrl, function(error, response, body) {
+        request(reqUrl, function (error, response, body) {
             let json = JSON.parse(body);
-           // console.log(body.response);
+            // console.log(body.response);
             let userFI = null;
 
             if (json.response[0].sex == 1) {
                 userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написала: \n'
             } else if (json.response[0].sex == 2) {
-               userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написал: \n'
+                userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написал: \n'
             } else {
                 userFI = json.response[0].first_name + ' ' + json.response[0].last_name + ' написало: \n'
             }
             callback(userFI, null);
         });
     };
-    
+
     return that;
 
 
