@@ -37,7 +37,7 @@ let vkCallbackServer = function () {
         that.callbackServer.post('/', function (req, res, next) {
             console.log('Request: ', req.body);
             if (that.isVkApi(req)) {
-                res.send(vkConfig.vkposts.access.reply);
+                res.send(vkConfig.vkposts.test_access.reply);
             } else if (that.isVkNewPost(req)) {
                 res.status(200).send("ok");
                 console.log('new_vk_post');
@@ -57,10 +57,10 @@ let vkCallbackServer = function () {
 
     };
     that.isVkApi = function (req) {
-        return (req.body.type == vkConfig.vkposts.access.type && req.body.group_id == vkConfig.vkposts.access.group_id);
+        return (req.body.type == vkConfig.vkposts.test_access.type && req.body.group_id == vkConfig.vkposts.test_access.group_id);
     };
     that.isVkNewPost = function (req) {
-        return (req.body.type == vkConfig.vkposts.wall_post_new.type && req.body.group_id == vkConfig.vkposts.wall_post_new.group_id);
+        return (req.body.type == vkConfig.vkposts.test_wall_post_new.type && req.body.group_id == vkConfig.vkposts.test_wall_post_new.group_id);
     };
     that.parsePost = function (req) {
         return req.body.text;
