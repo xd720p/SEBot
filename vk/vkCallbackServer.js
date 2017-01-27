@@ -87,7 +87,7 @@ let vkCallbackServer = function () {
 
         let time = date.getUTCHours() + 3 + ':' + minutes;
         let day = date.getUTCDate() + '.' + date.getUTCMonth() + 1 + '.' + date.getUTCFullYear();
-        return day + ' в ' + time;
+        return day + ' в ' + time + ' (Московское время) \n';
     };
 
     getUserFI = function (userId, callback) {
