@@ -70,7 +70,7 @@ let vkCallbackServer = function () {
         getUserFI(userId, function (data, err) {
             if (err) console.log('error');
             else {
-                date = new Date(req.body.object.date);
+                date = new Date(req.body.object.date * 1000);
                 let hours = date.getHours() + ':' +date.getMinutes();
                 let day = date.getDay() + '.' + date.getMonth() + '.' + date.getYear();
                 let message = day + ' в ' + hours + '\n' + data + req.body.object.text;
